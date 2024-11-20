@@ -46,6 +46,30 @@ router.post('/chatbot', async (req, res) => {
   }
 });
 
+// Add a new goal
+router.post('/add', authMiddleware, async (req, res) => {
+  const { title } = req.body;
+
+  if (!title || title.trim() === '') {
+    return res.status(400).json({ message: 'Goal title cannot be empty' });
+  }
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const newGoal = { title, completed: false };
+    user.goals.push(newGoal);
+    await user.save();
+
+    res.status(201).json({ message: 'Goal added successfully', goals: user.goals });
+  } catch (error) {
+    console.error('Error adding goal:', error);
+    res.status(500).json({ message: 'Failed to add goal' });
+  }
+});
 
 // Fetch all goals for the user
 router.get('/', authMiddleware, async (req, res) => {
@@ -63,6 +87,7 @@ router.get('/', authMiddleware, async (req, res) => {
 });
 
 // Mark a goal as completed
+// Mark a goal as completed
 router.put('/complete/:goalId', authMiddleware, async (req, res) => {
   const { goalId } = req.params;
 
@@ -74,17 +99,21 @@ router.put('/complete/:goalId', authMiddleware, async (req, res) => {
 
     const goal = user.goals.id(goalId);
     if (!goal) {
-      return res.status(404).json({ message: 'Goal not found' });
+      return res.status(404).json({ message: `Goal with ID ${goalId} not found` });
     }
 
     goal.completed = true;
     await user.save(); // Save changes to database
 
-    res.json({ message: 'Goal marked as complete', goals: user.goals });
+    res.json({
+      message: 'Goal marked as complete',
+      goal, // Return only the updated goal
+    });
   } catch (error) {
     console.error('Error completing goal:', error);
-    res.status(500).json({ message: 'Failed to complete goal' });
+    res.status(500).json({ message: 'Failed to complete goal', error: error.message });
   }
 });
+
 
 module.exports = router;
