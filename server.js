@@ -18,7 +18,7 @@ connectDB();
 
 // Enable CORS to allow requests from frontend
 app.use(cors({
-  origin: ['http://localhost:3001', 'https://mentalhealthmac.netlify.app'],
+  origin: ['http://localhost:3000','http://localhost:3001', 'https://mentalhealthmac.netlify.app'],
   methods: 'GET,POST,PUT,DELETE',
   credentials: true,
 }));
