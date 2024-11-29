@@ -5,11 +5,9 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const connectDB = require('./config/db');
-// const setupSocket = require('./socket');
 const authRoutes = require('./routes/auth');
 const chatbotRoutes = require('./routes/chatbot');
-// const postRoutes = require('./routes/post');
-const goalsRoutes = require('./routes/goals'); // Import goals routes
+const goalsRoutes = require('./routes/goals'); 
 
 const app = express();
 
@@ -29,12 +27,10 @@ app.use(express.json());
 // Define Routes
 app.use('/auth', authRoutes); // Authentication routes
 app.use('/api', chatbotRoutes); // Chatbot-related routes
-// app.use('/api/posts', postRoutes); // Posts routes
 app.use('/api/goals', goalsRoutes); // Goals-related routes
 
 // Create HTTP server and set up WebSocket
 const server = http.createServer(app);
-// setupSocket(server); // Set up WebSocket functionality
 
 // Start the server
 const PORT = process.env.PORT || 3000;

@@ -28,7 +28,7 @@ const authMiddleware = (req, res, next) => {
     // Attach the decoded user ID to the request object
     req.userId = decoded.userId;
 
-    // Proceed to the next middleware or route
+    // Proceed to the next middleware
     next();
   } catch (error) {
     if (error.name === 'TokenExpiredError') {

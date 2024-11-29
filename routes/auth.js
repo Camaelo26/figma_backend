@@ -67,7 +67,6 @@ router.post('/forgot-password', async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found with this email' });
     }
-    // Logic to send password reset link (e.g., via nodemailer) goes here
     res.json({ message: 'Password reset link sent to email' });
   } catch (error) {
     console.error("Error sending password reset link:", error);
@@ -88,8 +87,7 @@ router.post('/reset-password', async (req, res) => {
   }
 });
 
-// Fetch profile (protected route)
-// routes/auth.js
+
 
 router.get('/profile', authMiddleware, async (req, res) => {
   try {
@@ -105,8 +103,7 @@ router.get('/profile', authMiddleware, async (req, res) => {
 });
 
 
-// Update profile (protected route)
-// Update profile (protected route)
+// Update profile 
 router.put('/update-profile', authMiddleware, async (req, res) => {
   const { username, password } = req.body;
 
